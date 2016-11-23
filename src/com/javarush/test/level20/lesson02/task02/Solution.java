@@ -26,7 +26,7 @@ public class Solution {
             user.setFirstName("Путя");
             user.setLastName("Пувич");
             user.setBirthDate(new Date());
-            user.setMale(false);
+            user.setMale(true);
             user.setCountry(User.Country.RUSSIA);
 
             javaRush.users.add(user);
@@ -36,12 +36,13 @@ public class Solution {
             JavaRush loadedObject = new JavaRush();
             loadedObject.load(inputStream);
             //check here that javaRush object equals to loadedObject object - проверьте тут, что javaRush и loadedObject равны
-            //System.out.println(user.getFirstName() + " " + user.getLastName() + " " + user.getBirthDate() + " " + user.isMale() + " " + user.getCountry());
+            System.out.println(user.getFirstName() + " " + user.getLastName() + " " + user.getBirthDate() + " " + user.isMale() + " " + user.getCountry());
             System.out.println(loadedObject.users.size());
             System.out.println(javaRush.users.containsAll(loadedObject.users));
 
             outputStream.close();
             inputStream.close();
+            your_file_name.deleteOnExit();
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -63,17 +64,20 @@ public class Solution {
                 String trueFalse = user != null ? "true" : "false";
                 printWriter.println(trueFalse);
 
-                if(user != null) {
+                if(user.getFirstName() != null)
                     printWriter.println(user.getFirstName());
 
+                if(user.getLastName() != null)
                     printWriter.println(user.getLastName());
 
+                if(user.getBirthDate() != null)
                     printWriter.println(user.getBirthDate());
 
+                if(user.isMale() != false)
                     printWriter.println(user.isMale());
 
+                if(user.getCountry().getDisplayedName() != null)
                     printWriter.println(user.getCountry().getDisplayedName());
-                }
             }
 
             printWriter.flush();
@@ -84,21 +88,25 @@ public class Solution {
             //implement this method - реализуйте этот метод
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+            String firstName;
+            String lastName;
+            String birthDate;
 
             String trueFalse = reader.readLine();
 
             if(trueFalse.equals("true")) {
                 for(User user : users)  {
-                    if (user.getFirstName() != null)
-                        user.setFirstName(reader.readLine());
+                    if (!"null".equals(firstName = reader.readLine()))
+                        user.setFirstName(firstName);
 
-                    if (user.getLastName() != null)
-                        user.setLastName(reader.readLine());
+                    if (!"null".equals(lastName = reader.readLine()))
+                        user.setLastName(lastName);
 
-                    if (user.getBirthDate() != null)
-                        user.setBirthDate(dateFormat.parse(reader.readLine()));
+                    if (!"null".equals(birthDate = reader.readLine()))
+                        user.setBirthDate(dateFormat.parse(birthDate));
 
-                    user.setMale("true".equals(reader.readLine()));
+                    if("true".equals(reader.readLine()))
+                        user.setMale(true);
 
                     if(User.Country.RUSSIA.getDisplayedName().equals(reader.readLine())) {
                         user.setCountry(User.Country.RUSSIA);
