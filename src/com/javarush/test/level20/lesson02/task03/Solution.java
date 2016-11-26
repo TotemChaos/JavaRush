@@ -19,7 +19,12 @@ public class Solution {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             FileInputStream inputStream = new FileInputStream(new File(reader.readLine()));
+
             load(inputStream);
+
+            reader.close();
+            inputStream.close();
+
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -33,7 +38,7 @@ public class Solution {
             prop.setProperty(pair.getKey(), pair.getValue());
 
         prop.store(outputStream, null);
-        outputStream.close();
+        outputStream.flush();
     }
 
     public void load(InputStream inputStream) throws Exception {
