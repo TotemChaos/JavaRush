@@ -1,7 +1,6 @@
 package com.javarush.test.level20.lesson02.task02;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +22,8 @@ public class Solution {
             JavaRush javaRush = new JavaRush();
             //initialize users field for the javaRush object here - инициализируйте поле users для объекта javaRush тут
             User user = new User();
-            user.setFirstName("Путя");
-            user.setLastName("Пувич");
+            user.setFirstName("Муторная");
+            user.setLastName("Задача");
             user.setBirthDate(new Date());
             user.setMale(true);
             user.setCountry(User.Country.RUSSIA);
@@ -36,9 +35,7 @@ public class Solution {
             JavaRush loadedObject = new JavaRush();
             loadedObject.load(inputStream);
             //check here that javaRush object equals to loadedObject object - проверьте тут, что javaRush и loadedObject равны
-            System.out.println(user.getFirstName() + " " + user.getLastName() + " " + user.getBirthDate() + " " + user.isMale() + " " + user.getCountry());
-            System.out.println(loadedObject.users.size());
-            System.out.println(javaRush.users.containsAll(loadedObject.users));
+            System.out.println(javaRush.equals(loadedObject));
 
             outputStream.close();
             inputStream.close();
@@ -61,62 +58,63 @@ public class Solution {
             PrintWriter printWriter = new PrintWriter(outputStream);
 
             for(User user : users) {
-                String trueFalse = user != null ? "true" : "false";
-                printWriter.println(trueFalse);
+                String userValidator = user != null ? "YES" : "NO";
+                printWriter.println(userValidator);
 
-                if(user.getFirstName() != null)
-                    printWriter.println(user.getFirstName());
+                if(user != null) {
+                    if(user.getFirstName() != null) {
+                        printWriter.println(user.getFirstName());
+                    }else printWriter.println("NO_FIRST_NAME");
 
-                if(user.getLastName() != null)
-                    printWriter.println(user.getLastName());
+                    if(user.getLastName() != null) {
+                        printWriter.println(user.getLastName());
+                    }else printWriter.println("NO_LAST_NAME");
 
-                if(user.getBirthDate() != null)
-                    printWriter.println(user.getBirthDate());
+                    if(user.getBirthDate() != null) {
+                        printWriter.println(user.getBirthDate().getTime());
+                    }else printWriter.println("NO_BIRTH_DATE");
 
-                if(user.isMale() != false)
                     printWriter.println(user.isMale());
 
-                if(user.getCountry().getDisplayedName() != null)
-                    printWriter.println(user.getCountry().getDisplayedName());
+                    if(user.getCountry() != null) {
+                        printWriter.println(user.getCountry());
+                    }else printWriter.println("NO_COUNTRY");
+                }
             }
 
             printWriter.flush();
-            printWriter.close();
         }
 
         public void load(InputStream inputStream) throws Exception {
             //implement this method - реализуйте этот метод
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
-            String firstName;
-            String lastName;
-            String birthDate;
 
-            String trueFalse = reader.readLine();
+            while(reader.ready())   {
+                String firstName, lastName, birthDate, country;
+                User user = new User();
 
-            if(trueFalse.equals("true")) {
-                for(User user : users)  {
-                    if (!"null".equals(firstName = reader.readLine()))
+                if("YES".equals(reader.readLine())) {
+                    if (!"NO_FIRST_NAME".equals(firstName = reader.readLine())) {
                         user.setFirstName(firstName);
+                    } else user.setFirstName(null);
 
-                    if (!"null".equals(lastName = reader.readLine()))
+                    if (!"NO_LAST_NAME".equals(lastName = reader.readLine())) {
                         user.setLastName(lastName);
+                    } else user.setLastName(null);
 
-                    if (!"null".equals(birthDate = reader.readLine()))
-                        user.setBirthDate(dateFormat.parse(birthDate));
+                    if (!"NO_BIRTH_DATE".equals(birthDate = reader.readLine())) {
+                        user.setBirthDate(new Date(Long.parseLong(birthDate)));
+                    } else user.setBirthDate(null);
 
-                    if("true".equals(reader.readLine()))
-                        user.setMale(true);
+                    user.setMale(Boolean.valueOf(reader.readLine()));
 
-                    if(User.Country.RUSSIA.getDisplayedName().equals(reader.readLine())) {
-                        user.setCountry(User.Country.RUSSIA);
-                    }else if(User.Country.UKRAINE.getDisplayedName().equals(reader.readLine())) {
-                        user.setCountry(User.Country.UKRAINE);
-                    }else user.setCountry(User.Country.OTHER);
-                }
+                    if (!"NO_COUNTRY".equals(country = reader.readLine())) {
+                        user.setCountry(User.Country.valueOf(country));
+                    } else user.setCountry(null);
+                } else user = null;
+
+                users.add(user);
             }
-
-            reader.close();
         }
     }
 }
