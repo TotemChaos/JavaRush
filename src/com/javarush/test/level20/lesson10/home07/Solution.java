@@ -16,9 +16,11 @@ import java.io.*;
 */
 public class Solution implements Serializable, AutoCloseable {
     transient private FileOutputStream stream;
+    public String fileName = "c:\\data.txt";
 
     public Solution(String fileName) throws FileNotFoundException {
-        this.stream = new FileOutputStream(fileName);
+        this.fileName = fileName;
+        this.stream = new FileOutputStream(this.fileName);
     }
 
     public void writeObject(String string) throws IOException {
@@ -29,17 +31,46 @@ public class Solution implements Serializable, AutoCloseable {
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        out.close();
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        in.close();
+        this.stream = new FileOutputStream(fileName, true);
     }
 
     @Override
     public void close() throws Exception {
         System.out.println("Closing everything!");
         stream.close();
+    }
+
+    public static void main(String[] args) {
+        try {
+            File tempFile = File.createTempFile("tempFile", null);
+
+            Solution solution = new Solution("c:\\data1.txt");
+            solution.writeObject("First");
+            solution.close();
+
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(tempFile));
+            oos.writeObject(solution);
+            oos.close();
+
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(tempFile));
+            Solution solution1 = (Solution) ois.readObject();
+            ois.close();
+
+            solution1.writeObject("Second");
+            solution1.close();
+
+        }catch(IOException e)   {
+            System.out.println("Error IO");
+            e.printStackTrace();
+        }catch(ClassNotFoundException e)    {
+            System.out.println("Solution class not found");
+            e.printStackTrace();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
