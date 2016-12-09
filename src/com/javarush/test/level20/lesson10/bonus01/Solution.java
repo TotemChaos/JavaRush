@@ -18,50 +18,47 @@ getNumbers должен возвращать все такие числа в п�
 public class Solution {
     public static int[] getNumbers(int N) {
         int[] tmpResult = new int[100];
-        int count1 = 0;
+        byte count = 0;
 
         for(int i = 1; i < N; i++)  {
-            int number = i, count2 = 0, sum = 0;
-            int[] tmpNumberArr = new int[String.valueOf(i).length()];
+            int number = i, tmpSize = i, sum = 0;
+            byte size = 1;
+
+            while((tmpSize = tmpSize/10) > 0)
+                size++;
 
             while(number > 0) {
-                tmpNumberArr[count2++] = number % 10;
+                int tmpNumber =  number % 10;
+                int tmpSum = tmpNumber;
+
+                for(int j = 1; j < size; j++)
+                    tmpSum *= tmpNumber;
+
+                sum += tmpSum;
+
                 number /= 10;
             }
 
-            for(int arr : tmpNumberArr) {
-                int tmp = arr;
-
-                for(int j = 1; j < tmpNumberArr.length; j++)
-                    tmp *= arr;
-
-                sum += tmp;
-            }
-
             if(sum == i)
-                tmpResult[count1++] = i;
+                tmpResult[count++] = i;
         }
 
-        int[] result = Arrays.copyOf(tmpResult, count1);
+        int[] result = Arrays.copyOf(tmpResult, count);
 
         return result;
     }
 
     public static void main(String[] args) {
         Long t0 = System.currentTimeMillis();
-        long memoryStart = Runtime.getRuntime().freeMemory();
 
-        int[] array = getNumbers(10000 );
-
-        for(int arr : array)
-            System.out.println(arr);
-
-        System.out.println();
-
-        long memoryEnd = Runtime.getRuntime().freeMemory();
-        System.out.println("Memory: " + (memoryStart - memoryEnd) + " byte"); //Max_50.000.000
+        int[] array = getNumbers(500000000 );
 
         Long t1 = System.currentTimeMillis();
-        System.out.println("Time: " + (t1 - t0) + " ms"); //Max_10.000
+
+        System.out.println("Time: " + (t1 - t0)/ 1000d + " sec");
+        System.out.println("Memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + " mb");
+
+        for(int arr : array)
+            System.out.print(arr + " ");
     }
 }
