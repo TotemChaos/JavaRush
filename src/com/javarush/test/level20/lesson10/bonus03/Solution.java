@@ -45,10 +45,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i;
-
-                            while (len-- > 0)
-                                sb.append((char) crossword[tmpI++][j]);
-
+                            while (len-- > 0)   sb.append((char) crossword[tmpI++][j]);
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j, i + tmpLen);
@@ -57,10 +54,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i;
-
-                            while (len-- > 0)
-                                sb.append((char) crossword[tmpI--][j]);
-
+                            while (len-- > 0)   sb.append((char) crossword[tmpI--][j]);
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j, i - tmpLen);
@@ -69,10 +63,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[i][tmpJ++]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[i][tmpJ++]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j + tmpLen, i);
@@ -81,10 +72,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[i][tmpJ--]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[i][tmpJ--]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j - tmpLen, i);
@@ -93,10 +81,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i, tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[tmpI++][tmpJ++]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[tmpI++][tmpJ++]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j + tmpLen, i + tmpLen);
@@ -105,10 +90,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i, tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[tmpI--][tmpJ--]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[tmpI--][tmpJ--]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j - tmpLen, i - tmpLen);
@@ -117,10 +99,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i, tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[tmpI++][tmpJ--]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[tmpI++][tmpJ--]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j - tmpLen, i + tmpLen);
@@ -129,10 +108,7 @@ same - (1, 1) - (4, 1)
 
                         try {
                             int len = s.length(), tmpI = i, tmpJ = j;
-
-                            while (len-- > 0)
-                                sb.append(String.valueOf((char) crossword[tmpI--][tmpJ++]));
-
+                            while (len-- > 0)   sb.append(String.valueOf((char) crossword[tmpI--][tmpJ++]));
                             if (s.equals(sb.toString())) {
                                 word.setStartPoint(j, i);
                                 word.setEndPoint(j + tmpLen, i - tmpLen);
