@@ -51,7 +51,7 @@ public class Solution {
     public static void main(String[] args) {
         Long t0 = System.currentTimeMillis();
 
-        int[] array = getNumbers(500000000 );
+        int[] array = getNumbers(100000000 );
 
         Long t1 = System.currentTimeMillis();
 
