@@ -1,5 +1,7 @@
 package com.javarush.test.level20.lesson10.bonus04;
 
+import java.util.AbstractList;
+import java.util.Iterator;
 import java.util.List;
 
 /* Свой список
@@ -50,19 +52,77 @@ import java.util.List;
 Должно быть наследование AbstractList<String>, List<String>, Cloneable, Serializable
 Метод main в тестировании не участвует
 */
-public class Solution {
+public class Solution
+        extends AbstractList<String>
+        implements List<String>, Cloneable, java.io.Serializable    {
+
     public static void main(String[] args) {
         List<String> list = new Solution();
         for (int i = 1; i < 16; i++) {
             list.add(String.valueOf(i));
         }
-        System.out.println("Expected 3, actual is " + ((Solution) list).getParent("8"));
-        list.remove("5");
-        System.out.println("Expected null, actual is " + ((Solution) list).getParent("11"));
+        for(String s : list)
+            System.out.println(s);
+        //System.out.println("Expected 3, actual is " + ((Solution) list).getParent("8"));
+        //list.remove("5");
+        //System.out.println("Expected null, actual is " + ((Solution) list).getParent("11"));
     }
 
     public String getParent(String value) {
         //have to be implemented
         return null;
+    }
+
+    transient int size = 0;
+    transient Node<String> first;
+    transient Node<String> last;
+
+    public Solution() {}
+
+    private static class Node<String> {
+        String item;
+        Node<String> next;
+        Node<String> prev;
+
+        Node(Node<String> prev, String element, Node<String> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
+    @Override
+    public String get(int index) {
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public void add(int index, String element) {
+        super.add(index, element);
+    }
+
+    @Override
+    public String remove(int index) {
+        return super.remove(index);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return super.iterator();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
