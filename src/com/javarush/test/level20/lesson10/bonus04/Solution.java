@@ -1,5 +1,6 @@
 package com.javarush.test.level20.lesson10.bonus04;
 
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +55,7 @@ import java.util.List;
 */
 public class Solution
         extends AbstractList<String>
-        implements List<String>, Cloneable, java.io.Serializable    {
+        implements List<String>, Cloneable, Serializable    {
 
     public static void main(String[] args) {
         List<String> list = new Solution();
@@ -79,7 +80,7 @@ public class Solution
 
     public Solution() {}
 
-    private static class Node<String> {
+    private static class Node<String> implements Serializable {
         String item;
         Node<String> next;
         Node<String> prev;
@@ -91,9 +92,38 @@ public class Solution
         }
     }
 
+    //****************************
+    private boolean isElementIndex(int index) {
+        return index >= 0 && index < size;
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+size;
+    }
+
+    private void checkElementIndex(int index) {
+        if (!isElementIndex(index))
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    Node<String> node(int index) {
+        if (index < (size >> 1)) {
+            Node<String> x = first;
+            for (int i = 0; i < index; i++)
+                x = x.next;
+            return x;
+        } else {
+            Node<String> x = last;
+            for (int i = size - 1; i > index; i--)
+                x = x.prev;
+            return x;
+        }
+    }
+    //****************************
+
     @Override
     public String get(int index) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -102,13 +132,22 @@ public class Solution
     }
 
     @Override
-    public void add(int index, String element) {
-        super.add(index, element);
+    public boolean add(String s) {
+        final Node<String> l = last;
+        final Node<String> newNode = new Node<>(l, s, null);
+        last = newNode;
+        if (l == null)
+            first = newNode;
+        else
+            l.next = newNode;
+        size++;
+        modCount++;
+        return true;
     }
 
     @Override
-    public String remove(int index) {
-        return super.remove(index);
+    public boolean remove(Object o) {
+        return super.remove(o);
     }
 
     @Override
