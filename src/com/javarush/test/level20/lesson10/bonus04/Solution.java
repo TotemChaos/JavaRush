@@ -77,15 +77,17 @@ public class Solution
     transient int size = 0;
     transient Node<String> first;
     transient Node<String> last;
+    transient Node<String> root = new Node<>(null,null, null, null);
+    transient Node<String> parent = root;
 
     public Solution() {}
 
     private static class Node<String> implements Serializable {
         String item;
-        Node<String> next;
-        Node<String> prev;
+        Node<String> parent, next, prev;
 
-        Node(Node<String> prev, String element, Node<String> next) {
+        Node(Node<String> parent, Node<String> prev, String element, Node<String> next) {
+            this.parent = parent;
             this.item = element;
             this.next = next;
             this.prev = prev;
@@ -134,7 +136,7 @@ public class Solution
     @Override
     public boolean add(String s) {
         final Node<String> l = last;
-        final Node<String> newNode = new Node<>(l, s, null);
+        final Node<String> newNode = new Node<String>(l, s, null);
         last = newNode;
         if (l == null)
             first = newNode;
