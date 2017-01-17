@@ -62,11 +62,9 @@ public class Solution
         for (int i = 1; i < 16; i++) {
             list.add(String.valueOf(i));
         }
-        for(String s : list)
-            System.out.println(s);
-        //System.out.println("Expected 3, actual is " + ((Solution) list).getParent("8"));
-        //list.remove("5");
-        //System.out.println("Expected null, actual is " + ((Solution) list).getParent("11"));
+        System.out.println("Expected 3, actual is " + ((Solution) list).getParent("8"));
+        list.remove("5");
+        System.out.println("Expected null, actual is " + ((Solution) list).getParent("11"));
     }
 
     public String getParent(String value) {
@@ -74,11 +72,11 @@ public class Solution
         return null;
     }
 
-    transient int size = 0;
-    transient Node<String> first;
-    transient Node<String> last;
-    transient Node<String> root = new Node<>(null,null, null, null);
-    transient Node<String> parent = root;
+    private int size = 0;
+    private Node<String> first;
+    private Node<String> last;
+    private Node<String> root = new Node<>(null,null, null, null);
+    private Node<String> parent = root;
 
     public Solution() {}
 
@@ -125,7 +123,7 @@ public class Solution
 
     @Override
     public String get(int index) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Access from index denied");
     }
 
     @Override
@@ -136,7 +134,8 @@ public class Solution
     @Override
     public boolean add(String s) {
         final Node<String> l = last;
-        final Node<String> newNode = new Node<String>(l, s, null);
+        final Node<String> p = parent;
+        final Node<String> newNode = new Node<>(p, l, s, null);
         last = newNode;
         if (l == null)
             first = newNode;
@@ -159,7 +158,27 @@ public class Solution
 
     @Override
     public Iterator<String> iterator() {
-        return super.iterator();
+        return new Itr();
+    }
+
+    private class Itr implements Iterator<String> {
+
+        private int index = 0;
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public String next() {
+            return null;
+        }
+
+        @Override
+        public void remove() {
+
+        }
     }
 
     @Override
