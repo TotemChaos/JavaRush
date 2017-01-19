@@ -68,58 +68,34 @@ public class Solution
     }
 
     public String getParent(String value) {
-        //have to be implemented
+        for(Node<String> node = first;  node != null; node = node.left) {
+            if(node.parent == null & node.left == null)
+                return node.item;
+            else if()
+        }
         return null;
     }
 
     private int size = 0;
     private Node<String> first;
     private Node<String> last;
-    private Node<String> root = new Node<>(null,null, null, null);
-    private Node<String> parent = root;
+    //private Node<String> root = new Node<>(null, null, null, null);
+    //private Node<String> parent = root;
 
     public Solution() {}
 
     private static class Node<String> implements Serializable {
         String item;
-        Node<String> parent, next, prev;
+        Node<String> next;
+        Node<String> prev;
+        Node<String> parent;
 
-        Node(Node<String> parent, Node<String> prev, String element, Node<String> next) {
-            this.parent = parent;
+        Node(Node<String> prev, String element, Node<String> next) {
             this.item = element;
             this.next = next;
             this.prev = prev;
         }
     }
-
-    //****************************
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
-
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size;
-    }
-
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    Node<String> node(int index) {
-        if (index < (size >> 1)) {
-            Node<String> x = first;
-            for (int i = 0; i < index; i++)
-                x = x.next;
-            return x;
-        } else {
-            Node<String> x = last;
-            for (int i = size - 1; i > index; i--)
-                x = x.prev;
-            return x;
-        }
-    }
-    //****************************
 
     @Override
     public String get(int index) {
@@ -134,21 +110,56 @@ public class Solution
     @Override
     public boolean add(String s) {
         final Node<String> l = last;
-        final Node<String> p = parent;
-        final Node<String> newNode = new Node<>(p, l, s, null);
+        final Node<String> newNode = new Node<>(l, s, null);
         last = newNode;
         if (l == null)
             first = newNode;
         else
             l.next = newNode;
         size++;
+    }
+
+    String unlink(Node<String> x) {
+        final String element = x.item;
+        final Node<String> next = x.next;
+        final Node<String> prev = x.prev;
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
+        }
+
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+
+        x.item = null;
+        size--;
         modCount++;
-        return true;
+        return element;
     }
 
     @Override
     public boolean remove(Object o) {
-        return super.remove(o);
+        if (o == null) {
+            for (Node<String> x = first; x != null; x = x.next) {
+                if (x.item == null) {
+                    unlink(x);
+                }
+            }
+        } else {
+            for (Node<String> x = first; x != null; x = x.next) {
+                if (o.equals(x.item)) {
+                    unlink(x);
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -158,25 +169,48 @@ public class Solution
 
     @Override
     public Iterator<String> iterator() {
-        return new Itr();
+        return new Itr(this);
     }
 
     private class Itr implements Iterator<String> {
 
         private int index = 0;
+        private Node<String> lastReturned;
+        private Node<String> next;
+        private Solution context;
+
+        private Itr(Solution s) {
+            this.context = s;
+        }
 
         @Override
         public boolean hasNext() {
-            return false;
+            return index < size;
         }
 
         @Override
         public String next() {
-            return null;
+            if (!hasNext())
+                //throw new NoSuchElementException();
+
+            lastReturned = next;
+            next = next.next;
+            index++;
+            return lastReturned.item;
         }
 
         @Override
         public void remove() {
+            if (lastReturned == null)
+                throw new IllegalStateException();
+
+            Node<String> lastNext = lastReturned.next;
+            unlink(lastReturned);
+            if (next == lastReturned)
+                next = lastNext;
+            else
+                index--;
+            lastReturned = null;
 
         }
     }
